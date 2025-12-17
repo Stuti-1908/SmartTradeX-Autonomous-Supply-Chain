@@ -25,29 +25,7 @@ Traditional supply chains are **reactive**. If a container of vaccines overheats
 
 ---
 
-## 🏗️ Architecture
-
-The system follows a distributed microservices architecture containerized with Docker.
-
-```mermaid
-graph TD
-    A[IoT Simulator] -->|MQTT: Telemetry| B(Mosquitto Broker)
-    B -->|Stream| C[Edge Anomaly Detector]
-    B -->|Stream| D[Ingestion Service]
-    
-    subgraph "The Brain (AI Layer)"
-    C -->|Alert: Anomaly Detected| E[LangGraph Orchestrator]
-    E -->|1. Logistics Check| E
-    E -->|2. Compliance RAG| E
-    E -->|3. Finance Decision| B
-    end
-    
-    subgraph "The Storage & View"
-    D -->|Write| F[(InfluxDB)]
-    F -->|Query| G[Grafana Dashboard]
-    end
-
-### 🔧 Key Components
+## 🔧 Key Components
 
 | Service | Tech Stack | Responsibility |
 | :--- | :--- | :--- |
@@ -82,3 +60,29 @@ cd SmartTradeX-Autonomous-Supply-Chain
 
 # 2. Start the stack (This builds 6 microservices)
 docker-compose up --build
+
+
+## 🏗️ Architecture
+
+The system follows a distributed microservices architecture containerized with Docker.
+
+```mermaid
+graph TD
+    A[IoT Simulator] -->|MQTT: Telemetry| B(Mosquitto Broker)
+    B -->|Stream| C[Edge Anomaly Detector]
+    B -->|Stream| D[Ingestion Service]
+    
+    subgraph "The Brain (AI Layer)"
+    C -->|Alert: Anomaly Detected| E[LangGraph Orchestrator]
+    E -->|1. Logistics Check| E
+    E -->|2. Compliance RAG| E
+    E -->|3. Finance Decision| B
+    end
+    
+    subgraph "The Storage & View"
+    D -->|Write| F[(InfluxDB)]
+    F -->|Query| G[Grafana Dashboard]
+    end
+
+
+
