@@ -49,18 +49,6 @@ Traditional supply chains are **reactive**. If a container of vaccines overheats
 
 ---
 
-## 🛠️ Installation & Setup
-
-**Prerequisites:** Docker & Docker Compose.
-
-```bash
-# 1. Clone the repo
-git clone [https://github.com/Stuti-1908/SmartTradeX-Autonomous-Supply-Chain.git](https://github.com/Stuti-1908/SmartTradeX-Autonomous-Supply-Chain.git)
-cd SmartTradeX-Autonomous-Supply-Chain
-
-# 2. Start the stack (This builds 6 microservices)
-docker-compose up --build
-
 
 ## 🏗️ Architecture
 
@@ -83,6 +71,8 @@ graph TD
     D -->|Write| F[(InfluxDB)]
     F -->|Query| G[Grafana Dashboard]
     end
+
+
 
 
 
