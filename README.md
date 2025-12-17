@@ -25,6 +25,30 @@ Traditional supply chains are **reactive**. If a container of vaccines overheats
 
 ---
 
+## 🏗️ Architecture
+
+The system follows a distributed microservices architecture containerized with Docker.
+
+```mermaid
+graph TD
+    A[IoT Simulator] -->|MQTT: Telemetry| B(Mosquitto Broker)
+    B -->|Stream| C[Edge Anomaly Detector]
+    B -->|Stream| D[Ingestion Service]
+    
+    subgraph "The Brain (AI Layer)"
+    C -->|Alert: Anomaly Detected| E[LangGraph Orchestrator]
+    E -->|1. Logistics Check| E
+    E -->|2. Compliance RAG| E
+    E -->|3. Finance Decision| B
+    end
+    
+    subgraph "The Storage & View"
+    D -->|Write| F[(InfluxDB)]
+    F -->|Query| G[Grafana Dashboard]
+    end
+```
+---
+
 ## 🔧 Key Components
 
 | Service | Tech Stack | Responsibility |
@@ -49,29 +73,17 @@ Traditional supply chains are **reactive**. If a container of vaccines overheats
 
 ---
 
+## 🛠️ Installation & Setup
 
-## 🏗️ Architecture
+**Prerequisites:** Docker & Docker Compose.
 
-The system follows a distributed microservices architecture containerized with Docker.
+```bash
+# 1. Clone the repo
+git clone [https://github.com/Stuti-1908/SmartTradeX-Autonomous-Supply-Chain.git](https://github.com/Stuti-1908/SmartTradeX-Autonomous-Supply-Chain.git)
+cd SmartTradeX-Autonomous-Supply-Chain
 
-```mermaid
-graph TD
-    A[IoT Simulator] -->|MQTT: Telemetry| B(Mosquitto Broker)
-    B -->|Stream| C[Edge Anomaly Detector]
-    B -->|Stream| D[Ingestion Service]
-    
-    subgraph "The Brain (AI Layer)"
-    C -->|Alert: Anomaly Detected| E[LangGraph Orchestrator]
-    E -->|1. Logistics Check| E
-    E -->|2. Compliance RAG| E
-    E -->|3. Finance Decision| B
-    end
-    
-    subgraph "The Storage & View"
-    D -->|Write| F[(InfluxDB)]
-    F -->|Query| G[Grafana Dashboard]
-    end
-
+# 2. Start the stack (This builds 6 microservices)
+docker-compose up --build
 
 
 
