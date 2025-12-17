@@ -1,0 +1,124 @@
+version: '3.8'
+
+services:
+  # 1. Message Broker
+  mosquitto:
+    image: eclipse-mosquitto:2.0
+    container_name: smarttradex-mqtt
+    ports:
+      - "1883:1883"
+      - "9001:9001"
+    volumes:
+      - ./infrastructure/mosquitto/mosquitto.conf:/mosquitto/config/mosquitto.conf
+    networks:
+      - trade-net
+
+  # 2. Simulator
+  iot-simulator:
+    build: ./services/iot-simulator
+    container_name: smarttradex-sim
+    environment:
+      - MQTT_BROKER_HOST=mosquitto
+    depends_on:
+      - mosquitto
+    networks:
+      - trade-net
+
+  # 3. Database (Added Healthcheck!)
+  influxdb:
+    image: influxdb:2.7
+    container_name: smarttradex-influx
+    ports:
+      - "8086:8086"
+    environment:
+      - DOCKER_INFLUXDB_INIT_MODE=setup
+      - DOCKER_INFLUXDB_INIT_USERNAME=admin
+      - DOCKER_INFLUXDB_INIT_PASSWORD=adminpassword123
+      - DOCKER_INFLUXDB_INIT_ORG=smarttrade
+      - DOCKER_INFLUXDB_INIT_BUCKET=logistics
+      - DOCKER_INFLUXDB_INIT_ADMIN_TOKEN=my-super-secret-auth-token
+    volumes:
+      - influxdb_data:/var/lib/influxdb2
+    networks:
+      - trade-net
+    healthcheck:
+      test: ["CMD", "influx", "ping"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  # 4. Ingestion (Waits for DB Health)
+  iot-ingestion:
+    build: ./services/iot-ingestion
+    container_name: smarttradex-ingest
+    environment:
+      - MQTT_BROKER_HOST=mosquitto
+      - INFLUX_URL=http://influxdb:8086
+      - INFLUX_TOKEN=my-super-secret-auth-token
+      - INFLUX_ORG=smarttrade
+      - INFLUX_BUCKET=logistics
+    depends_on:
+      influxdb:
+        condition: service_healthy  # <--- Critical Fix
+      mosquitto:
+        condition: service_started
+    networks:
+      - trade-net
+
+  # 5. Dashboard
+  grafana:
+    image: grafana/grafana:latest
+    container_name: smarttradex-grafana
+    ports:
+      - "3000:3000"
+    environment:
+      - GF_SECURITY_ADMIN_USER=admin
+      - GF_SECURITY_ADMIN_PASSWORD=admin
+    depends_on:
+      - influxdb
+    networks:
+      - trade-net
+    volumes:
+      - grafana_data:/var/lib/grafana
+
+  # 6. AI Anomaly Detector
+  iot-anomaly-detector:
+    build: ./services/iot-anomaly-detector
+    container_name: smarttradex-ai
+    environment:
+      - MQTT_BROKER_HOST=mosquitto
+    depends_on:
+      - mosquitto
+    networks:
+      - trade-net
+
+  # 7. Compliance Agent
+  compliance-agent:
+    build: ./services/compliance-agent
+    container_name: smarttradex-legal
+    environment:
+      - MQTT_BROKER_HOST=mosquitto
+      # PASTE YOUR API KEY BELOW CAREFULLY (No spaces around =)
+      - OPENAI_API_KEY=sk-proj-placeholder-key-for-demo
+      - mosquitto
+    networks:
+      - trade-net
+
+  # 8. The Supervisor (LangGraph Orchestrator)
+  trade-orchestrator:
+    build: ./services/trade-orchestrator
+    container_name: smarttradex-orchestrator
+    environment:
+      - MQTT_BROKER_HOST=mosquitto
+    depends_on:
+      - mosquitto
+    networks:
+      - trade-net
+
+networks:
+  trade-net:
+    driver: bridge
+
+volumes:
+  influxdb_data:
+  grafana_data:

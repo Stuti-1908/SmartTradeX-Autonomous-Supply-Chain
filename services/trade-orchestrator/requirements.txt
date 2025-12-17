@@ -1,0 +1,5 @@
+langgraph
+langchain
+langchain-core
+paho-mqtt
+pydantic

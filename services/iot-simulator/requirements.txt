@@ -1,0 +1,3 @@
+pydantic
+faker
+paho-mqtt

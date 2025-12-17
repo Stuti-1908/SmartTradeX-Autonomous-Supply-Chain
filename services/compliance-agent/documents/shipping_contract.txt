@@ -1,0 +1,14 @@
+SMARTTRADEX LOGISTICS AGREEMENT - CONTRACT #SHP-GLOBAL-2025
+
+SECTION 4: QUALITY CONTROL & PERISHABLES
+
+4.1 TEMPERATURE CONTROLS
+For sensitive pharmaceutical shipments (Class A), the internal container temperature must be maintained between 2°C and 8°C.
+Any deviation below 0°C or above 10°C for a duration longer than 5 minutes constitutes a "Critical Breach".
+
+4.2 PENALTIES
+In the event of a Critical Breach, the Buyer reserves the right to reject the shipment immediately.
+A penalty fee of 15% of the invoice value will be automatically deducted from the escrow.
+
+4.3 SHOCK & VIBRATION
+Maximum allowable shock is 2.0G. Deviations above this indicate mishandling.
