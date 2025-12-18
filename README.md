@@ -12,7 +12,9 @@
 
 ## 📸 System Overview
 
-![SmartTradeX Dashboard](https://github.com/Stuti-1908/SmartTradeX-Autonomous-Supply-Chain/blob/main/dashboard-screenshot.png?raw=true)
+![Real-time Container Temperature - Dashboard](https://github.com/Stuti-1908/SmartTradeX-Autonomous-Supply-Chain/blob/main/dashboard-screenshot1.png?raw=true)
+![AI Anamoly Score - Dashboard](https://github.com/Stuti-1908/SmartTradeX-Autonomous-Supply-Chain/blob/main/dashboard-screenshot2.png?raw=true)
+![Real-time Battery Level - Dashboard](https://github.com/Stuti-1908/SmartTradeX-Autonomous-Supply-Chain/blob/main/dashboard-screenshot3.png?raw=true)
 
 *Above: The system detects a refrigeration failure (Red Graph), triggers an AI Alert (Anomaly Score), and the Agent autonomously blocks the payment (Status: BLOCKED).*
 
@@ -84,6 +86,7 @@ cd SmartTradeX-Autonomous-Supply-Chain
 
 # 2. Start the stack (This builds 6 microservices)
 docker-compose up --build
+
 
 
 
